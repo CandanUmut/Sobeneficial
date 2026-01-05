@@ -1,370 +1,195 @@
+# SoBeneficial (formerly BeneFiSocial)
 
-# README (Türkçe) — **SoBeneficial**
+[English](#english) | [Türkçe](#turkce)
 
-## SoBeneficial 
+## English
 
-Gerçekten fayda üretmek için tasarlanmış, topluluk-odaklı bir sosyal ağ.
+### What is SoBeneficial?
+SoBeneficial is a community-first social network designed to be beneficial rather than addictive or toxic. Each community is its own mini social space with optional modules (Q&A, resources, events, mentorship, jobs/collaboration) and a carefully guarded **Donated Sessions** concept where volunteers or professionals can donate time slots safely and ethically. The project keeps a nonprofit/mission-first mindset—growth should not depend on rage or clickbait.
 
-SoBeneficial’in ana fikri şu: **Topluluklar insanı büyütmeli**—dikkatini çalmamalı, kıyas ve öfke döngülerine sokmamalı, zehirli bir ortam oluşturmamalı.
+### Why mission-first?
+Traditional social networks reward outrage and endless scrolling. SoBeneficial prioritizes:
+- Community health over virality
+- Privacy-by-default spaces for sensitive groups
+- Transparent rules and moderation
+- Supportive culture instead of clout chasing
 
-Tek bir “genel akış” yerine, SoBeneficial **bağımsız topluluklardan** oluşur (kamuya açık veya özel). Her topluluk kendi “mini sosyal ağını” yönetir ve ihtiyacı olan modülleri açar: soru-cevap, yardım, mentorluk, eğitim yolları, iş / proje fırsatları, kaynaklar ve daha fazlası.
+### Key concepts
+- **Community-first:** People join a context, not a global feed. Communities can be public, private, or hybrid.
+- **Modular spaces:** Communities decide which modules are on (posts, Q&A, resources, events, mentorship, jobs/collab).
+- **Donated Sessions:** Time-bounded help sessions with explicit boundaries and disclaimers; never a replacement for professional care.
 
-### Neden var?
+### Where we are today (audit)
+- **Backend:** FastAPI scaffold under `backend/` with health check, profile/auth helpers, and placeholder routes for RFH (requests-for-help), content, QA, projects, events, notifications, and matching. Uses async SQLAlchemy with Supabase Postgres connection handling and `.env.example` for configuration. No migrations or CI yet.
+- **Database:** `benefisocial.sql` contains a non-runnable reference schema (tables like profiles, rfh, offers, projects, comments, events, reports). RLS policies are not codified in the repo yet.
+- **Frontend:** Flutter shell in `frontend/` with Supabase client configuration in `lib/config.dart`, auth guard (GitHub/Google OAuth via Supabase), and skeleton screens for RFH and profiles. Requires manual URL/key configuration; no build scripts beyond standard Flutter commands.
+- **Tooling/CI:** No GitHub Actions or linters are wired at the repo root. Backend and Flutter lint/test configs live in their directories. 
+- **Docs & site:** Documentation is being refreshed in this PR. A simple GitHub Pages-friendly pitch site lives in `docs-site/`.
 
-Birçok sosyal platform öfkeyi, kutuplaşmayı ve bağımlılık oluşturan etkileşimi ödüllendiriyor. SoBeneficial bunun tersini hedefler:
+### Tech stack
+- **Backend:** Python FastAPI + async SQLAlchemy, ORJSON, Loguru
+- **Database:** Supabase Postgres (with RLS to be enforced), Supabase Auth JWKS verification
+- **Frontend:** Flutter (Dart) + Supabase client
 
-* **viral yerine faydalı**
-* **etkileşim metriği yerine topluluk sağlığı**
-* **şöhret yerine destek**
-* **kaos yerine güvenlik**
+### Repository structure (high-level)
+- `backend/` – FastAPI app (`app/main.py`, routers under `app/api/v1/`), `requirements.txt`, `.env.example`, dev scripts
+- `frontend/` – Flutter project with `lib/config.dart`, platform folders, `analysis_options.yaml`
+- `benefisocial.sql` – Reference schema (do not execute as-is)
+- `docs-site/` – Static bilingual landing page for GitHub Pages (HTML/CSS/JS)
+- `LICENSE` – GPL-3.0 license
 
----
+### Getting started (local development)
 
-## Temel Kavramlar
+#### Backend (FastAPI)
+1. Install Python 3.11+ and create a virtual environment:
+   ```bash
+   cd backend
+   python -m venv .venv
+   source .venv/bin/activate  # Windows: .venv\Scripts\activate
+   pip install -r requirements.txt
+   ```
+2. Create your environment file:
+   ```bash
+   cp .env.example .env
+   ```
+3. Fill `.env` with your Supabase project values:
+   - `DATABASE_URL`: Supabase Postgres URI with `?sslmode=require` (edit to use your credentials; the sample value is a placeholder).
+   - `SUPABASE_JWKS_URL`: `https://<project>.supabase.co/auth/v1/.well-known/jwks.json`.
+   - `SUPABASE_AUDIENCE`: Usually `authenticated`.
+   - `CORS_ORIGINS`: Comma-separated origins (e.g., `http://localhost:3000`).
+   - `DEV_ALLOW_UNVERIFIED`: `true` only for local/dev while wiring auth.
+4. Run the API:
+   ```bash
+   ./uvicorn_dev.sh  # or: uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
+   ```
+5. Open docs at http://127.0.0.1:8000/api/docs.
 
-### 1) Topluluk Önce Gelir
+#### Frontend (Flutter)
+1. Install Flutter and enable web support (`flutter config --enable-web`).
+2. Configure Supabase and backend endpoints in `frontend/lib/config.dart` (replace the sample URL and anon key with your project’s values; keep service role keys out of the client).
+3. Install dependencies and run:
+   ```bash
+   cd frontend
+   flutter pub get
+   flutter run -d chrome  # or another device
+   ```
 
-* İnsanlar “internete” katılmaz; bir **ortama** katılır.
-* Topluluk türleri:
+#### Supabase setup (example workflow)
+1. Create a Supabase project; note the **Project URL**, **anon public key**, and **service role key**.
+2. In Database settings, copy the connection string, switch the driver to `postgresql+asyncpg`, and keep `sslmode=require`.
+3. Set `SUPABASE_JWKS_URL` using your project URL.
+4. Enable RLS on tables you create; start with `profiles`, `rfh`, `offers`, `projects`, `events`, `comments`, `reports`, and any membership table you add. Policies should deny by default and check `auth.uid()` + membership/role.
+5. Keep the **service role key** only in backend environments or secret managers—never in the Flutter app or the repo.
 
-  * **Açık (Public)**: keşfe açık
-  * **Özel (Private)**: davetle / doğrulamayla
-  * **Hibrit**: dışarıya açık içerik + özel alanlar
+### Contributing
+We welcome contributors across engineering, design, and community building.
+- Open an issue for ideas, bugs, or security concerns.
+- Keep PRs small and describe any schema or auth assumptions.
+- Good first issues: documentation improvements, RLS policy tests, Flutter UI polish, GitHub Pages content.
 
-### 2) Her Topluluğun Kendi Sosyal Alanı Var
+### Roadmap & security
+- Roadmap: [ROADMAP.md](./ROADMAP.md)
+- Security guidance: [SECURITY.md](./SECURITY.md)
+- Code of Conduct: [CODE_OF_CONDUCT.md](./CODE_OF_CONDUCT.md)
 
-Her topluluk kendine göre modüllerle çalışabilir:
-
-* Paylaşımlar / güncellemeler
-* Duyurular
-* Etkinlikler
-* Kaynak kütüphanesi
-* Soru–Cevap ve yardım panoları
-* Mentorluk / eşleşme sistemi
-* Eğitim / öğrenme yolları
-* İş / proje / işbirliği panosu
-
-### 3) Bağış Seansları (Yardımı Ölçeklemek)
-
-Önemli fikir: uzmanlar veya gönüllüler, uygun gördükleri zaman dilimlerini **bağış seansı** olarak açabilir. Örnekler:
-
-* hukuki yönlendirme (uygun sınırlar içinde)
-* terapi / koçluk (çok net kurallar ve güvenlikle)
-* mentorluk
-* kariyer desteği
-* özel ders / eğitim
-
-> Not: Bu modül çok dikkatli tasarlanmalı (doğrulama, sınırlar, güvenlik, uyarılar). Amaç, “sömürücü bir pazar” değil; güvenli ve faydalı bir destek ağı.
-
----
-
-## SoBeneficial Ne Sağlar?
-
-* Mentor, yol arkadaşı, accountability eşleşmesi bulma
-* Soru sorma ve pratik cevap alma
-* Hedefe uygun topluluklara katılma (kariyer, sağlık, eğitim, hayat becerileri, hobi, vb.)
-* Topluluk içi yapılandırılmış içerikle öğrenme (yollar, rehberler, başlangıç kitleri)
-* Bağış seansı alma / verme
-* Proje üretme, işbirliği kurma, fırsat bulma
-
----
-
-## İlkeler
-
-* **Güvenlik ve insan onuru pazarlık konusu değildir**
-* **Varsayılan gizlilik** (özellikle hassas topluluklarda)
-* **Öfke ve kışkırtma odaklı algoritmalar yok**
-* **Kültürü topluluk belirler**
-* **Kurallar ve moderasyon şeffaf olmalı**
-* **Şimdilik nonprofit / misyon odaklı yaklaşım**
-
----
-
-## MVP Özellikleri (Öneri)
-
-(Bunu yaşayan bir yol haritası gibi düşün—istediğin gibi değiştir.)
-
-### Topluluk Sistemi
-
-* Topluluk oluştur / katıl
-* Açık vs özel topluluklar
-* Roller: sahip, admin, moderatör, üye, misafir
-* Topluluk kuralları + raporlama
-
-### Modüller (Topluluk hangi modülleri açacağını seçer)
-
-* Paylaşımlar / akış
-* Soru–Cevap
-* Kaynak kütüphanesi
-* Mentorluk dizini
-* Etkinlikler
-* İş / işbirliği panosu
-
-### Bağış Seansları
-
-* Seans slotu açma
-* Seans talebi oluşturma
-* Eşleşme & planlama akışı
-* Temel doğrulama / itibar sinyalleri (çok dikkatli)
-
-### Güvenlik (olmazsa olmaz)
-
-* Raporlama, moderasyon araçları
-* Taciz karşıtı korumalar
-* Topluluk bazlı gizlilik ayarları
-* Net içerik politikası ve uygulama
+### License
+Licensed under [GPL-3.0](./LICENSE). If you need a different license for specific contributions, open an issue so we can discuss alignment with the mission-first goals.
 
 ---
 
-## Durum
+## Türkçe
 
-Bu proje, eski adı **BeneFiSocial** olan fikrin daha net bir misyonla **SoBeneficial** olarak devam eden halidir ve aktif gelişmektedir.
+### SoBeneficial nedir?
+SoBeneficial (eski adıyla BeneFiSocial), bağımlılık veya toksiklik yerine **gerçek fayda** üretmek için tasarlanmış topluluk-odaklı bir sosyal ağdır. Her topluluk kendi mini sosyal alanına ve açıp kapatabileceği modüllere sahiptir (Soru-Cevap, kaynaklar, etkinlikler, mentorluk, işler/işbirlikleri). **Bağış Seansları** modeliyle gönüllüler veya profesyoneller güvenli ve etik şekilde zaman dilimleri bağışlayabilir.
 
----
+### Neden misyon-öncelikli?
+Klasik sosyal ağlar öfke ve sonsuz kaydırmayı ödüllendiriyor. SoBeneficial ise şunları önceleyerek farklılaşır:
+- Viral büyüme yerine topluluk sağlığı
+- Hassas gruplar için varsayılan gizlilik
+- Şeffaf kurallar ve moderasyon
+- Ün peşinde koşmak yerine destekleyici kültür
 
-## Başlangıç (Şimdilik Taslak)
+### Temel kavramlar
+- **Topluluk önce gelir:** İnsanlar global bir akışa değil, bağlama katılır. Topluluklar açık, kapalı veya hibrit olabilir.
+- **Modüler alanlar:** Topluluk hangi modüllerin açık olacağını seçer (paylaşımlar, Soru-Cevap, kaynaklar, etkinlikler, mentorluk, işler/işbirlikleri).
+- **Bağış Seansları:** Sınırları net, uyarıları belirgin zaman dilimleri; profesyonel hizmetin yerine geçmez.
 
-> Repo yapısı netleşince buraya gerçek komutları ekle.
+### Güncel durum (denetim)
+- **Backend:** `backend/` altında FastAPI iskeleti; sağlık kontrolü ve RFH, içerik, QA, projeler, etkinlikler, bildirimler, eşleştirme için taslak router’lar mevcut. Supabase Postgres’e async bağlantı yapısı ve `.env.example` var; migration/CI yok.
+- **Veritabanı:** `benefisocial.sql` çalıştırılabilir değildir; profil, rfh, offers, projects, comments, events, reports gibi tabloları içeren referans şema olarak tutulur. RLS politikaları repoda tanımlı değil.
+- **Frontend:** `frontend/` içinde Flutter kabuğu; `lib/config.dart` dosyasında Supabase istemcisi ayarları, Supabase OAuth guard’ı ve RFH/profil ekran taslakları var. URL/anahtarlar manuel doldurulmalı; standart Flutter komutları dışında ek script yok.
+- **Araçlar/CI:** Repo kökünde GitHub Actions yok. Backend ve Flutter için format/lint ayarları kendi klasörlerinde.
+- **Doküman & site:** Bu PR ile güncellendi. GitHub Pages uyumlu tanıtım sayfası `docs-site/` klasöründe.
 
-1. Depoyu klonla
-2. Environment değişkenlerini ayarla
-3. Dev server’ı başlat
-4. Testleri çalıştır (varsa)
+### Teknoloji yığını
+- **Backend:** Python FastAPI + async SQLAlchemy, ORJSON, Loguru
+- **Veritabanı:** Supabase Postgres (RLS zorunlu), Supabase Auth JWKS doğrulaması
+- **Frontend:** Flutter (Dart) + Supabase istemcisi
 
-**Dokümantasyon:** `/docs` (önerilir)
-**Yol Haritası:** `/ROADMAP.md` (önerilir)
+### Depo yapısı (özet)
+- `backend/` – FastAPI uygulaması (`app/main.py`, `app/api/v1/` router’lar), `requirements.txt`, `.env.example`, geliştirme scriptleri
+- `frontend/` – Flutter projesi, `lib/config.dart`, platform klasörleri, `analysis_options.yaml`
+- `benefisocial.sql` – Referans şema (doğrudan çalıştırmayın)
+- `docs-site/` – GitHub Pages için statik iki dilli tanıtım sayfası (HTML/CSS/JS)
+- `LICENSE` – GPL-3.0 lisansı
 
----
+### Başlarken (lokal geliştirme)
 
-## Katkı (Contributing)
+#### Backend (FastAPI)
+1. Python 3.11+ kurun, sanal ortam oluşturun:
+   ```bash
+   cd backend
+   python -m venv .venv
+   source .venv/bin/activate  # Windows: .venv\Scripts\activate
+   pip install -r requirements.txt
+   ```
+2. Ortam dosyasını oluşturun:
+   ```bash
+   cp .env.example .env
+   ```
+3. `.env` içini Supabase projenizle doldurun:
+   - `DATABASE_URL`: Supabase Postgres URI (kimlik bilgilerinizi girin, `sslmode=require` kalsın).
+   - `SUPABASE_JWKS_URL`: `https://<proje>.supabase.co/auth/v1/.well-known/jwks.json`.
+   - `SUPABASE_AUDIENCE`: Genellikle `authenticated`.
+   - `CORS_ORIGINS`: Virgülle ayrılmış origin listesi.
+   - `DEV_ALLOW_UNVERIFIED`: Yalnızca lokal/dev için `true` bırakın.
+4. API’yi çalıştırın:
+   ```bash
+   ./uvicorn_dev.sh  # veya: uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
+   ```
+5. Dokümanlara http://127.0.0.1:8000/api/docs adresinden bakın.
 
-Katkılar çok değerli—özellikle şu alanlarda:
+#### Frontend (Flutter)
+1. Flutter kurun ve web desteğini açın (`flutter config --enable-web`).
+2. `frontend/lib/config.dart` içindeki Supabase ve backend adreslerini kendi değerlerinizle güncelleyin (service role anahtarını **asla** koymayın).
+3. Bağımlılıkları kurup çalıştırın:
+   ```bash
+   cd frontend
+   flutter pub get
+   flutter run -d chrome
+   ```
 
-* topluluk modüllerinin ürün tasarımı
-* trust & safety (raporlama, moderasyon, gizlilik)
-* onboarding + topluluk şablonları
-* erişilebilirlik ve mobil UX
-* dokümantasyon
+#### Supabase kurulumu (örnek akış)
+1. Supabase projesi açın; **Proje URL’i**, **anon public key** ve **service role key** değerlerini alın.
+2. Database bağlantı stringini `postgresql+asyncpg` formatına çevirin ve `sslmode=require` bırakın.
+3. `SUPABASE_JWKS_URL` değerini proje URL’inizle ayarlayın.
+4. Oluşturduğunuz tablolarda RLS’i açın; `profiles`, `rfh`, `offers`, `projects`, `events`, `comments`, `reports` ve üyelik tablonuzda deny-by-default + `auth.uid()` + üyelik/rol kontrolü yapın.
+5. **Service role key** sadece backend/secret manager ortamlarında kalsın; Flutter istemcisine veya repoya koymayın.
 
-**Katkı akışı**
+### Katkıda bulunma
+Mühendislik, tasarım ve topluluk alanlarında katkılar bekliyoruz.
+- Fikir, bug veya güvenlik konularını issue açarak paylaşın.
+- PR’ları küçük tutun; şema veya yetkilendirme varsayımlarını açıklayın.
+- Yeni başlayanlar için: dokümantasyon geliştirme, RLS testleri, Flutter UI iyileştirmeleri, GitHub Pages içeriği.
 
-1. Issue aç (özellik / bug / tartışma)
-2. Fork + branch
-3. PR gönder
-4. Küçük ve incelenebilir değişiklikler yap
+### Yol haritası ve güvenlik
+- Yol haritası: [ROADMAP.md](./ROADMAP.md)
+- Güvenlik rehberi: [SECURITY.md](./SECURITY.md)
+- Topluluk kuralları: [CODE_OF_CONDUCT.md](./CODE_OF_CONDUCT.md)
 
----
-
-## Davranış Kuralları
-
-Bu proje insanları korumayı hedefliyor. Saygı ve nezaket burada “opsiyon” değil.
-
-Öneri: `CODE_OF_CONDUCT.md` ve `SECURITY.md` ekleyin.
-
----
-
-## Uyarı / Sorumluluk Reddi
-
-SoBeneficial profesyonel hizmetlerin yerine geçmez. Sağlık, hukuk, psikoloji gibi konular sıkı kurallar ve etik sınırlar içinde yürütülmelidir. Topluluklar ve gönüllüler yerel yasalara ve platform kurallarına uymalıdır.
-
----
-
-## Lisans
-
-Buraya lisansı ekleyin (MIT / Apache-2.0 / AGPL / misyon uyumlu özel lisans vb.)
-
----
-
-## İletişim / Organizasyon
-
-* Proje: **SoBeneficial**
-* Eski ad: **BeneFiSocial**
-* Amaç: faydalı, güvenli, topluluk bazlı bir sosyal ağ kurmak
-
----
-
-
-# README (English) — **SoBeneficial**
-
-## SoBeneficial (formerly **BeneFiSocial**)
-
-A community-first social network designed to be genuinely helpful.
-
-SoBeneficial is built around a simple idea: **communities should help people grow**—not drain their attention, increase anxiety, or push toxicity.
-
-Instead of one giant “feed” optimized for engagement, SoBeneficial is made of **independent communities** (public or private). Each community can run its own “mini social network” with the tools it needs: asking questions, getting help, mentorship, learning paths, work opportunities, resources, and more.
-
-### Why this exists
-
-Many social platforms reward outrage, comparison, and addiction loops. SoBeneficial aims to be the opposite:
-
-* **useful over viral**
-* **community health over engagement metrics**
-* **support over clout**
-* **trust & safety over chaos**
-
----
-
-## Core Concepts
-
-### 1) Communities First
-
-* People don’t join “the internet.” They join **a place**.
-* Each community can be:
-
-  * **Public** (open discovery)
-  * **Private** (invite-only / verified membership)
-  * **Hybrid** (public content + private areas)
-
-### 2) Each Community Has Its Own Social Space
-
-Instead of one universal timeline, every community can have:
-
-* Updates / posts
-* Announcements
-* Events
-* Resource library
-* Q&A and help boards
-* Mentorship / buddy system
-* Learning or training tracks
-* Work / collaboration boards
-
-### 3) Donated Sessions (Help That Scales)
-
-A key idea: professionals or skilled volunteers can offer **donated sessions** (time they choose to donate) to people who need help—examples:
-
-* legal guidance (where appropriate)
-* therapy / coaching (with strict boundaries and safety)
-* mentorship
-* career advice
-* tutoring
-
-> Note: This should be handled carefully (verification, boundaries, disclaimers, safety rules). The goal is to create a trusted way for people to receive help without turning it into a predatory marketplace.
+### Lisans
+[GPL-3.0](./LICENSE) lisansı ile dağıtılır. Misyon-öncelikli hedeflerle çelişmeyen alternatif lisans talepleri için issue açabilirsiniz.
 
 ---
 
-## What SoBeneficial Helps People Do
-
-* Find mentors, peers, and accountability partners
-* Ask questions and get practical answers
-* Join communities that match goals (career, health, education, life skills, faith, hobbies, etc.)
-* Learn through structured community content (paths, guides, “starter kits”)
-* Receive or offer donated help sessions
-* Collaborate on projects or find opportunities
-
----
-
-## Guiding Principles
-
-* **Safety & dignity are non-negotiable**
-* **Privacy by default** (especially in sensitive communities)
-* **No algorithmic rage-baiting**
-* **Communities define their culture**
-* **Transparency in rules and moderation**
-* **Nonprofit-first mindset** (mission > monetization)
-
----
-
-## MVP Feature List (Suggested)
-
-(Use this as a living roadmap—edit freely.)
-
-### Community System
-
-* Create / join communities
-* Public vs private communities
-* Roles: owner, admin, moderator, member, guest
-* Community rules + reporting
-
-### Community Modules (pick what each community enables)
-
-* Posts & updates
-* Q&A board
-* Resource library
-* Mentorship directory
-* Events
-* Jobs / collaborations board
-
-### Donated Sessions
-
-* Offer session slots
-* Request a session
-* Matching & scheduling flow
-* Basic verification / reputation signals (careful design)
-
-### Trust & Safety (must-have)
-
-* Reporting, moderation tools
-* Anti-harassment protections
-* Community-level privacy controls
-* Clear content policy and enforcement
-
----
-
-## Status
-
-This project is under active development and evolving from its original name (**BeneFiSocial**) into **SoBeneficial** with a clearer mission and structure.
-
----
-
-## Getting Started (Placeholder)
-
-> Add real commands once the repo structure is finalized.
-
-1. Clone the repository
-2. Copy environment variables
-3. Start the dev server
-4. Run tests (if available)
-
-**Docs:** `/docs` (if you create this folder)
-**Roadmap:** `/ROADMAP.md` (recommended)
-
----
-
-## Contributing
-
-Contributions are welcome—especially in these areas:
-
-* product design for community modules
-* trust & safety design (reporting, moderation, privacy)
-* onboarding + community templates
-* accessibility & mobile-friendly UI
-* documentation
-
-**How to contribute**
-
-1. Open an issue (feature idea / bug / discussion)
-2. Fork and create a branch
-3. Submit a PR with a clear description
-4. Keep changes small and reviewable
-
----
-
-## Code of Conduct
-
-This project aims to protect people. Kindness isn’t optional here.
-
-Recommended: create `CODE_OF_CONDUCT.md` and `SECURITY.md`.
-
----
-
-## Disclaimer
-
-SoBeneficial is not a substitute for professional services. Any medical/legal/mental health support must follow strict rules and ethical boundaries. Communities and volunteers must comply with local laws and platform policies.
-
----
-
-## License
-
-Add your license here (e.g., MIT / Apache-2.0 / AGPL / custom nonprofit-friendly license).
-
----
-
-## Contact / Organization
-
-* Project name: **SoBeneficial**
-* Former name: **BeneFiSocial**
-* Mission: build a community-based network that improves lives
-
----
-
+**GitHub Pages:** Statik tanıtım sayfası `docs-site/` klasöründedir. GitHub Pages’te kaynak olarak bu klasörü seçebilir veya içeriği `docs/` ya da köke kopyalayabilirsiniz.
