@@ -368,6 +368,3 @@ Add your license here (e.g., MIT / Apache-2.0 / AGPL / custom nonprofit-friendly
 
 ---
 
----
-
-If you tell me what your current repo looks like (folders / tech stack / how to run it), I can tailor the “Getting Started” section to real commands and also draft **ROADMAP.md + CODE_OF_CONDUCT.md + SECURITY.md** in the same style.
