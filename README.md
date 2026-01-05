@@ -1,7 +1,7 @@
 
 # README (Türkçe) — **SoBeneficial**
 
-## SoBeneficial (eski adıyla **BeneFiSocial**)
+## SoBeneficial 
 
 Gerçekten fayda üretmek için tasarlanmış, topluluk-odaklı bir sosyal ağ.
 
