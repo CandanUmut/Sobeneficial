@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SoBeneficial | Community-first social network</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="hero">
+    <div class="hero__top">
+      <div class="brand" tabindex="0">SoBeneficial</div>
+      <nav class="nav" aria-label="Primary navigation">
+        <a href="#problem">Problem</a>
+        <a href="#how">How it works</a>
+        <a href="#sessions">Donated Sessions</a>
+        <a href="#architecture">Architecture</a>
+        <a href="#contribute">Contribute</a>
+      </nav>
+      <div class="actions">
+        <button id="lang-en" class="chip" aria-pressed="true">EN</button>
+        <button id="lang-tr" class="chip" aria-pressed="false">TR</button>
+        <button id="theme-toggle" class="chip" aria-label="Toggle theme">☀️</button>
+      </div>
+    </div>
+    <div class="hero__content" data-lang="en">
+      <p class="eyebrow">Community-first social network</p>
+      <h1>Build spaces that heal, teach, and support</h1>
+      <p class="lede">SoBeneficial replaces rage-driven feeds with intentional, modular communities—and a carefully designed Donated Sessions model for safe, time-bounded help.</p>
+      <div class="cta-row">
+        <a class="btn" href="https://github.com" target="_blank" rel="noreferrer">View on GitHub</a>
+        <a class="btn ghost" href="#start">Start locally</a>
+      </div>
+    </div>
+    <div class="hero__content" data-lang="tr">
+      <p class="eyebrow">Topluluk-öncelikli sosyal ağ</p>
+      <h1>İyileştiren, öğreten, destekleyen alanlar kurun</h1>
+      <p class="lede">SoBeneficial, öfke dolu akışlar yerine niyetli ve modüler topluluklar kurar; güvenli ve süre sınırlı Bağış Seansları modeliyle destek sağlar.</p>
+      <div class="cta-row">
+        <a class="btn" href="https://github.com" target="_blank" rel="noreferrer">GitHub’da Gör</a>
+        <a class="btn ghost" href="#start">Yerelde başla</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section id="problem" class="section">
+      <div class="section__content" data-lang="en">
+        <h2>The problem with today’s networks</h2>
+        <p>Most social platforms reward outrage and addictive scrolling. Vulnerable communities struggle to find safe, well-moderated spaces. Support systems rarely scale without turning exploitative.</p>
+        <div class="grid">
+          <article class="card">
+            <h3>Safety over virality</h3>
+            <p>No rage-bait algorithms. Communities set the rules and moderation flows.</p>
+          </article>
+          <article class="card">
+            <h3>Modular by design</h3>
+            <p>Each community toggles modules it needs—Q&A, resources, events, mentorship, jobs/collab.</p>
+          </article>
+          <article class="card">
+            <h3>Mission-first</h3>
+            <p>Nonprofit mindset keeps growth aligned with benefit, not engagement tricks.</p>
+          </article>
+        </div>
+      </div>
+      <div class="section__content" data-lang="tr">
+        <h2>Bugünkü ağların sorunu</h2>
+        <p>Çoğu platform öfke ve bağımlı kaydırmayı ödüllendiriyor. Hassas topluluklar güvenli alan bulmakta zorlanıyor. Destek sistemleri ise suistimal edilmeden ölçeklenemiyor.</p>
+        <div class="grid">
+          <article class="card">
+            <h3>Viral değil güvenli</h3>
+            <p>Öfke tetikleyici algoritmalar yok. Kuralları ve moderasyonu topluluk belirler.</p>
+          </article>
+          <article class="card">
+            <h3>Modüler yapı</h3>
+            <p>Her topluluk ihtiyacı olan modülleri açar: Soru-Cevap, kaynaklar, etkinlikler, mentorluk, işler/işbirlikleri.</p>
+          </article>
+          <article class="card">
+            <h3>Misyon önceliği</h3>
+            <p>Nonprofit yaklaşım büyümeyi faydaya hizalar, etkileşim oyunlarına değil.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="how" class="section alt">
+      <div class="section__content" data-lang="en">
+        <h2>How it works</h2>
+        <div class="grid two">
+          <article class="card">
+            <h3>Communities as mini social spaces</h3>
+            <ul>
+              <li>Public, private, or hybrid visibility</li>
+              <li>Custom rules and moderation</li>
+              <li>Module toggles per community</li>
+            </ul>
+          </article>
+          <article class="card">
+            <h3>Modules you can mix and match</h3>
+            <ul>
+              <li>Posts & updates, Q&A, resource library</li>
+              <li>Events and enrollment</li>
+              <li>Mentorship directories and job/collab boards</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+      <div class="section__content" data-lang="tr">
+        <h2>Nasıl çalışır?</h2>
+        <div class="grid two">
+          <article class="card">
+            <h3>Mini sosyal alanlar</h3>
+            <ul>
+              <li>Açık, kapalı veya hibrit görünürlük</li>
+              <li>Özel kurallar ve moderasyon</li>
+              <li>Topluluk bazında modül seçimi</li>
+            </ul>
+          </article>
+          <article class="card">
+            <h3>Karıştırıp eşleştirebileceğiniz modüller</h3>
+            <ul>
+              <li>Gönderiler & güncellemeler, Soru-Cevap, kaynak kütüphanesi</li>
+              <li>Etkinlikler ve katılım</li>
+              <li>Mentorluk dizinleri ve iş/işbirliği panoları</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="sessions" class="section">
+      <div class="section__content" data-lang="en">
+        <h2>Donated Sessions (safely)</h2>
+        <p>A time-bound way for volunteers or professionals to donate help sessions—designed with clear boundaries, verification options, and disclaimers. Not a replacement for medical, legal, or mental health care.</p>
+        <div class="grid two">
+          <article class="card">
+            <h3>Safety guardrails</h3>
+            <ul>
+              <li>Membership and role checks</li>
+              <li>Mandatory disclaimers and consent</li>
+              <li>Optional verification for sensitive categories</li>
+            </ul>
+          </article>
+          <article class="card">
+            <h3>Ethical flow</h3>
+            <ul>
+              <li>Offer slots → requests → approvals</li>
+              <li>Feedback with anti-harassment protections</li>
+              <li>Audit trails for every status change</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+      <div class="section__content" data-lang="tr">
+        <h2>Bağış Seansları (güvenli)</h2>
+        <p>Gönüllü veya profesyonellerin destek seanslarını bağışlaması için süre sınırlı bir yol; sınırlar, doğrulama seçenekleri ve uyarılarla tasarlanır. Tıbbi/hukuki/psikolojik hizmetin yerine geçmez.</p>
+        <div class="grid two">
+          <article class="card">
+            <h3>Güvenlik önlemleri</h3>
+            <ul>
+              <li>Üyelik ve rol kontrolü</li>
+              <li>Zorunlu uyarı metinleri ve onay</li>
+              <li>Hassas kategoriler için isteğe bağlı doğrulama</li>
+            </ul>
+          </article>
+          <article class="card">
+            <h3>Etik akış</h3>
+            <ul>
+              <li>Slot açma → talep → onay/red</li>
+              <li>Taciz karşıtı korumalı geri bildirim</li>
+              <li>Her durum değişimi için kayıt</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="architecture" class="section alt">
+      <div class="section__content" data-lang="en">
+        <h2>Architecture snapshot</h2>
+        <ul class="pill-list">
+          <li>FastAPI backend with async SQLAlchemy</li>
+          <li>Supabase Postgres + Auth (RLS enforced)</li>
+          <li>Flutter client with Supabase SDK</li>
+          <li>Static GitHub Pages site (this page)</li>
+        </ul>
+        <p class="note">Current repo state: backend and Flutter scaffolds exist; reference schema in <code>benefisocial.sql</code>; migrations/RLS/CI still to add.</p>
+      </div>
+      <div class="section__content" data-lang="tr">
+        <h2>Mimari özeti</h2>
+        <ul class="pill-list">
+          <li>Async SQLAlchemy ile FastAPI backend</li>
+          <li>Supabase Postgres + Auth (RLS zorunlu)</li>
+          <li>Supabase SDK kullanan Flutter istemci</li>
+          <li>Statik GitHub Pages sitesi (bu sayfa)</li>
+        </ul>
+        <p class="note">Mevcut depo durumu: backend ve Flutter iskeletleri hazır; <code>benefisocial.sql</code> içinde referans şema; migration/RLS/CI eklenmeli.</p>
+      </div>
+    </section>
+
+    <section id="roadmap" class="section">
+      <div class="section__content" data-lang="en">
+        <h2>Roadmap highlights</h2>
+        <ol class="timeline">
+          <li><strong>MVP-0:</strong> Stable local dev, baseline RLS, CI skeleton</li>
+          <li><strong>MVP-1:</strong> Community membership/roles, content + reports, audit logs</li>
+          <li><strong>MVP-2:</strong> Modular community pages (Q&A, resources, events, mentorship, jobs)</li>
+          <li><strong>MVP-3:</strong> Donated Sessions with verification and safety presets</li>
+          <li><strong>MVP-4:</strong> Performance, caching, background jobs, observability</li>
+        </ol>
+        <a class="inline-link" href="../ROADMAP.md">Read full roadmap →</a>
+      </div>
+      <div class="section__content" data-lang="tr">
+        <h2>Yol haritası özet</h2>
+        <ol class="timeline">
+          <li><strong>MVP-0:</strong> Stabil lokal geliştirme, temel RLS, CI iskeleti</li>
+          <li><strong>MVP-1:</strong> Topluluk üyelik/rolleri, içerik + raporlar, audit log</li>
+          <li><strong>MVP-2:</strong> Modüler topluluk sayfaları (Soru-Cevap, kaynaklar, etkinlikler, mentorluk, işler)</li>
+          <li><strong>MVP-3:</strong> Doğrulama ve güvenlik şablonlarıyla Bağış Seansları</li>
+          <li><strong>MVP-4:</strong> Performans, caching, background job’lar, gözlemlenebilirlik</li>
+        </ol>
+        <a class="inline-link" href="../ROADMAP.md">Tam yol haritasını oku →</a>
+      </div>
+    </section>
+
+    <section id="blog" class="section alt">
+      <div class="section__content" data-lang="en">
+        <h2>Vision & principles</h2>
+        <div class="grid two">
+          <article class="card">
+            <h3>Vision</h3>
+            <p>Communities that help people grow without sacrificing safety or dignity.</p>
+          </article>
+          <article class="card">
+            <h3>Principles</h3>
+            <ul>
+              <li>Safety and dignity are non-negotiable</li>
+              <li>Privacy by default for sensitive spaces</li>
+              <li>Transparent moderation and rules</li>
+              <li>Mission-first, not engagement-first</li>
+            </ul>
+          </article>
+          <article class="card">
+            <h3>Where we are now</h3>
+            <p>Backend and Flutter scaffolds are in place; schema and RLS hardening, CI, and full UI polish are next.</p>
+          </article>
+          <article class="card">
+            <h3>Where we go next</h3>
+            <p>Ship community membership + module toggles, enforce RLS, add Donated Sessions safely, and professionalize each screen.</p>
+          </article>
+        </div>
+      </div>
+      <div class="section__content" data-lang="tr">
+        <h2>Vizyon & ilkeler</h2>
+        <div class="grid two">
+          <article class="card">
+            <h3>Vizyon</h3>
+            <p>Güvenlik ve onurdan ödün vermeden insanları büyüten topluluklar.</p>
+          </article>
+          <article class="card">
+            <h3>İlkeler</h3>
+            <ul>
+              <li>Güvenlik ve onur pazarlık konusu değildir</li>
+              <li>Hassas alanlarda varsayılan gizlilik</li>
+              <li>Şeffaf moderasyon ve kurallar</li>
+              <li>Etkileşim değil misyon öncelikli yaklaşım</li>
+            </ul>
+          </article>
+          <article class="card">
+            <h3>Şu anki durum</h3>
+            <p>Backend ve Flutter iskeletleri hazır; sırada şema ve RLS sertleştirme, CI ve UI iyileştirmeleri var.</p>
+          </article>
+          <article class="card">
+            <h3>Sıradaki adımlar</h3>
+            <p>Topluluk üyeliği + modül ayarları, RLS uygulaması, güvenli Bağış Seansları ve her ekranın profesyonelleşmesi.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="contribute" class="section">
+      <div class="section__content" data-lang="en">
+        <h2>How to contribute</h2>
+        <ul class="pill-list">
+          <li>Developers: FastAPI endpoints, RLS policies/tests, Flutter UI polish</li>
+          <li>Designers: design system tokens, accessibility, copywriting</li>
+          <li>Community builders: safety playbooks, onboarding templates</li>
+        </ul>
+        <p>Start with the README, Roadmap, and Security docs. Open small PRs and document schema/auth assumptions.</p>
+        <a class="inline-link" href="../README.md">Go to README →</a>
+      </div>
+      <div class="section__content" data-lang="tr">
+        <h2>Nasıl katkı verilir?</h2>
+        <ul class="pill-list">
+          <li>Geliştiriciler: FastAPI endpoint’leri, RLS policy/testleri, Flutter UI iyileştirmeleri</li>
+          <li>Tasarımcılar: tasarım sistemi token’ları, erişilebilirlik, metin yazımı</li>
+          <li>Topluluk inşacıları: güvenlik rehberleri, onboarding şablonları</li>
+        </ul>
+        <p>README, Yol Haritası ve Güvenlik dokümanlarıyla başlayın. Küçük PR’lar açın ve şema/yetkilendirme varsayımlarını açıklayın.</p>
+        <a class="inline-link" href="../README.md">README’ye git →</a>
+      </div>
+    </section>
+
+    <section id="start" class="section alt">
+      <div class="section__content" data-lang="en">
+        <h2>Start locally</h2>
+        <pre class="code">
+cd backend
+python -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+cp .env.example .env
+./uvicorn_dev.sh
+        </pre>
+        <p class="note">Configure <code>frontend/lib/config.dart</code> with your Supabase URL and anon key, then run <code>flutter pub get</code> and <code>flutter run -d chrome</code>.</p>
+        <div class="links">
+          <a class="inline-link" href="../SECURITY.md">Security guidance →</a>
+          <a class="inline-link" href="../CODE_OF_CONDUCT.md">Code of Conduct →</a>
+        </div>
+      </div>
+      <div class="section__content" data-lang="tr">
+        <h2>Yerelde başla</h2>
+        <pre class="code">
+cd backend
+python -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+cp .env.example .env
+./uvicorn_dev.sh
+        </pre>
+        <p class="note"><code>frontend/lib/config.dart</code> dosyasını Supabase URL ve anon key ile ayarlayın; sonra <code>flutter pub get</code> ve <code>flutter run -d chrome</code> çalıştırın.</p>
+        <div class="links">
+          <a class="inline-link" href="../SECURITY.md">Güvenlik rehberi →</a>
+          <a class="inline-link" href="../CODE_OF_CONDUCT.md">Davranış Kuralları →</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer" data-lang="en">
+    <p>Built for communities that choose benefit over virality. Formerly BeneFiSocial.</p>
+  </footer>
+  <footer class="footer" data-lang="tr">
+    <p>Viralite yerine faydayı seçen topluluklar için geliştirildi. Önceki adı BeneFiSocial.</p>
+  </footer>
+
+  <script src="main.js"></script>
+</body>
+</html>
