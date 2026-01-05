@@ -1,4 +1,4 @@
-# SoBeneficial (formerly BeneFiSocial)
+# SoBeneficial 
 
 [English](#english) | [Türkçe](#turkce)
 
