@@ -31,8 +31,22 @@
 
   <title>benefisocialplatform</title>
   <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+  <div id="notice" class="banner notice" hidden>
+    <span id="noticeText"></span>
+    <button id="noticeClose" class="banner-close" type="button" aria-label="Close notice">×</button>
+  </div>
+  <div id="setupBanner" class="banner setup" hidden>
+    <span>Expose prayer_hub in Supabase to enable this app.</span>
+    <button id="setupBannerClose" class="banner-close" type="button" aria-label="Close setup banner">×</button>
+  </div>
+  <div id="updateToast" class="toast" hidden>
+    <span>Update available. Refresh to get the latest version.</span>
+    <button id="updateToastClose" class="banner-close" type="button" aria-label="Close update toast">×</button>
+  </div>
+  <script src="app.js" defer></script>
   <script src="flutter_bootstrap.js" async></script>
 </body>
 </html>

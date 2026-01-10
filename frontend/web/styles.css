@@ -1,0 +1,43 @@
+.banner,
+.toast {
+  align-items: center;
+  display: flex;
+  font-family: Arial, sans-serif;
+  gap: 12px;
+  justify-content: space-between;
+  padding: 10px 16px;
+}
+
+.banner.notice {
+  background: #1e5fbf;
+  color: #fff;
+}
+
+.banner.setup {
+  background: #f4d35e;
+  color: #2d2a24;
+}
+
+.toast {
+  background: #2f2f2f;
+  bottom: 16px;
+  color: #fff;
+  left: 16px;
+  position: fixed;
+  right: 16px;
+  z-index: 1000;
+}
+
+.banner-close {
+  background: transparent;
+  border: 0;
+  color: inherit;
+  cursor: pointer;
+  font-size: 18px;
+  line-height: 1;
+  padding: 4px;
+}
+
+[hidden] {
+  display: none !important;
+}
